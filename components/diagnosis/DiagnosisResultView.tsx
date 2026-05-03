@@ -16,10 +16,31 @@ function scoreStatusSuffix(grade: DiagnosisGrade): string {
 }
 
 function benchmarkCopy(grade: DiagnosisGrade): string {
-  return grade === "A"
-    ? "同規模企業と比較すると、意思決定精度は平均以上の水準です。"
-    : "同規模企業と比較すると、意思決定精度は平均以下です";
+  switch (grade) {
+    case "A":
+      return "同規模企業と比較すると、意思決定精度は平均以上の水準です。";
+    case "B":
+      return "同規模企業と比較すると、意思決定精度は平均付近で、ばらつきが見られます。";
+    case "C":
+    case "D":
+      return "同規模企業と比較すると、意思決定精度は平均以下です。";
+  }
 }
+
+/** ランク別メインコピー（スコア・ランクと整合） */
+const TIER_MESSAGES: Record<DiagnosisGrade, readonly string[]> = {
+  A: [
+    "意思決定レベルは高い状態です。",
+    "現状、大きな課題はありませんが、さらなる精度向上の余地があります。",
+    "より高度な意思決定のために、論点・ROI・根拠を一枚にそろえることで、次の投資判断をさらに迅速かつ説得力あるものにできます。",
+  ],
+  B: [
+    "一部に改善余地があります。",
+    "要件定義やROI設計に課題が見られます。",
+  ],
+  C: ["意思決定に課題があります。", "プロジェクト失敗リスクが高い状態です。"],
+  D: ["意思決定プロセスの見直しが必要です。", "現状のまま進めると高確率で失敗します。"],
+};
 
 function tierStyles(percent: number) {
   if (percent >= 80) {
@@ -111,6 +132,7 @@ export function DiagnosisResultView() {
 
   const tier = tierStyles(result.percent);
   const statusSuffix = scoreStatusSuffix(result.grade);
+  const tierLines = TIER_MESSAGES[result.grade];
 
   return (
     <main className="mx-auto max-w-lg rounded-2xl border border-da-border bg-da-surface px-5 py-8 shadow-card sm:px-8 sm:py-9">
@@ -138,18 +160,11 @@ export function DiagnosisResultView() {
         診断結果は簡易分析に基づいています。
       </p>
 
-      {/* 2. 現状 */}
+      {/* 2. ランク別：評価・現状・リスク */}
       <div className="mt-5 space-y-3 text-sm leading-relaxed text-da-fgMuted">
-        <p>
-          現状、<strong className="font-semibold text-da-fg">要件定義</strong>と
-          <strong className="font-semibold text-da-fg">ROI設計</strong>
-          に課題があります。
-        </p>
-        {/* 3. リスク */}
-        <p>
-          この状態で進めると、要件定義のズレやROI説明不足により、プロジェクト失敗リスクが高まります。
-        </p>
-        {/* 4. 次アクションの示唆 */}
+        {tierLines.map((line) => (
+          <p key={line}>{line}</p>
+        ))}
         <p>
           まずは診断結果をもとに、投資判断・要件定義・ROIの論点を整理することをおすすめします。
         </p>
