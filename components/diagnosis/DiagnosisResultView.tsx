@@ -27,20 +27,78 @@ function benchmarkCopy(grade: DiagnosisGrade): string {
   }
 }
 
-/** ランク別メインコピー（スコア・ランクと整合） */
-const TIER_MESSAGES: Record<DiagnosisGrade, readonly string[]> = {
-  A: [
-    "意思決定レベルは高い状態です。",
-    "現状、大きな課題はありませんが、さらなる精度向上の余地があります。",
-    "より高度な意思決定のために、論点・ROI・根拠を一枚にそろえることで、次の投資判断をさらに迅速かつ説得力あるものにできます。",
-  ],
-  B: [
-    "一部に改善余地があります。",
-    "要件定義やROI設計に課題が見られます。",
-  ],
-  C: ["意思決定に課題があります。", "プロジェクト失敗リスクが高い状態です。"],
-  D: ["意思決定プロセスの見直しが必要です。", "現状のまま進めると高確率で失敗します。"],
+/** ランク別の本文（課題・要因・リスク・提案で整合） */
+type TierCopy = {
+  factorsTitle: string;
+  challenges: readonly string[];
+  factorsBody: string;
+  risks: readonly string[];
+  improvement: string;
 };
+
+const TIER_COPY: Record<DiagnosisGrade, TierCopy> = {
+  A: {
+    factorsTitle: "スコアを伸ばすためのポイント",
+    challenges: [
+      "意思決定レベルは高い状態です。",
+      "さらなる精度向上の余地があります。",
+    ],
+    factorsBody:
+      "ROIの定量説明や前提の共有がやや弱いと感じる場合は、さらに伸びしろがあります。",
+    risks: [
+      "より高度な意思決定のために、論点・ROI・根拠を一枚にそろえると、次の投資判断がより早く進みます。",
+    ],
+    improvement:
+      "まずは診断結果をもとに、投資判断・要件定義・ROIの論点を整理することをおすすめします。",
+  },
+  B: {
+    factorsTitle: "スコア低下の主な要因",
+    challenges: [
+      "一部に改善余地があります。",
+      "要件定義やROI設計に課題が見られます。",
+    ],
+    factorsBody:
+      "特に、要件定義の曖昧さとROIの説明不足が、スコア低下の主な要因です。",
+    risks: [
+      "この状態が続くと、稟議・実行の段階で手戻りや説明不足が目立ちやすくなります。",
+    ],
+    improvement:
+      "まずは診断結果をもとに、投資判断・要件定義・ROIの論点を整理することをおすすめします。",
+  },
+  C: {
+    factorsTitle: "スコア低下の主な要因",
+    challenges: ["意思決定に課題があります。", "プロジェクト失敗リスクが高い状態です。"],
+    factorsBody:
+      "要件定義の曖昧さとROIの説明不足に加え、論点の抜けが重なりスコアを押し下げています。",
+    risks: [
+      "このまま進めると、承認・実行の両面でコストが膨らみ、判断がブレやすくなります。",
+    ],
+    improvement:
+      "まずは診断結果をもとに、投資判断・要件定義・ROIの論点を整理することをおすすめします。",
+  },
+  D: {
+    factorsTitle: "スコア低下の主な要因",
+    challenges: [
+      "意思決定プロセスの見直しが必要です。",
+      "現状のまま進めると高確率で失敗します。",
+    ],
+    factorsBody:
+      "要件が固定できず、ROIストーリーが成立していないことが、スコア低下の中心です。",
+    risks: [
+      "根拠・記録が弱いままでは判断の再現性がなく、投資判断のミスが連鎖しやすい状態です。",
+    ],
+    improvement:
+      "まずは診断結果をもとに、投資判断・要件定義・ROIの論点を整理することをおすすめします。",
+  },
+};
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="mt-4 border-t border-white/[0.06] pt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-da-accent">
+      {children}
+    </p>
+  );
+}
 
 function tierStyles(percent: number) {
   if (percent >= 80) {
@@ -132,10 +190,10 @@ export function DiagnosisResultView() {
 
   const tier = tierStyles(result.percent);
   const statusSuffix = scoreStatusSuffix(result.grade);
-  const tierLines = TIER_MESSAGES[result.grade];
+  const copy = TIER_COPY[result.grade];
 
   return (
-    <main className="mx-auto max-w-lg rounded-2xl border border-da-border bg-da-surface px-5 py-8 shadow-card sm:px-8 sm:py-9">
+    <main className="mx-auto max-w-lg rounded-2xl border border-da-border bg-da-surface px-5 py-7 shadow-card sm:px-8 sm:py-8">
       <p className="text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-da-accent">
         Decision AI
       </p>
@@ -143,40 +201,58 @@ export function DiagnosisResultView() {
         診断結果
       </h1>
 
-      {/* 1. スコア */}
-      <div className={`mt-5 rounded-xl border px-4 py-5 text-center ${tier.border} ${tier.bg}`}>
+      {/* 診断結果（スコア） */}
+      <div className={`mt-4 rounded-xl border px-4 py-4 text-center ${tier.border} ${tier.bg}`}>
         <p className="text-[15px] leading-snug text-da-fg sm:text-base">
           あなたの意思決定レベル：
           <span className={`font-bold ${tier.grade}`}>{result.grade}</span>
           <span className={`font-semibold ${tier.percentText}`}>（{result.percent}%）</span>
           <span className="font-medium text-da-fgMuted">{statusSuffix}</span>
         </p>
-        <p className="mt-3 text-xs leading-relaxed text-da-fgMuted sm:text-[13px]">
-          {benchmarkCopy(result.grade)}
-        </p>
       </div>
+
+      {/* 同規模企業との比較 */}
+      <SectionLabel>同規模企業との比較</SectionLabel>
+      <p className="mt-2 text-sm leading-relaxed text-da-fgMuted">{benchmarkCopy(result.grade)}</p>
 
       <p className="mt-3 text-center text-[11px] leading-relaxed text-da-subtle">
         診断結果は簡易分析に基づいています。
       </p>
 
-      {/* 2. ランク別：評価・現状・リスク */}
-      <div className="mt-5 space-y-3 text-sm leading-relaxed text-da-fgMuted">
-        {tierLines.map((line) => (
+      {/* 現在の課題 */}
+      <SectionLabel>現在の課題</SectionLabel>
+      <div className="mt-2 space-y-2 text-sm leading-relaxed text-da-fgMuted">
+        {copy.challenges.map((line) => (
           <p key={line}>{line}</p>
         ))}
-        <p>
-          まずは診断結果をもとに、投資判断・要件定義・ROIの論点を整理することをおすすめします。
-        </p>
       </div>
 
-      {/* 5. 意思決定トリガー */}
+      {/* スコア低下の主な要因（Aは見出しのみ調整） */}
+      <SectionLabel>{copy.factorsTitle}</SectionLabel>
+      <p className="mt-2 text-sm leading-relaxed text-da-fgMuted">{copy.factorsBody}</p>
+
+      {/* リスク説明 */}
+      <SectionLabel>リスク</SectionLabel>
+      <div className="mt-2 space-y-2 text-sm leading-relaxed text-da-fgMuted">
+        {copy.risks.map((line) => (
+          <p key={line}>{line}</p>
+        ))}
+      </div>
+
+      {/* 改善提案 */}
+      <SectionLabel>改善提案</SectionLabel>
+      <p className="mt-2 text-sm leading-relaxed text-da-fgMuted">{copy.improvement}</p>
+
+      {/* CTA前の一言 */}
       <p className="mt-5 text-center text-sm font-medium leading-relaxed text-da-fg">
-        このまま進めるか、ここで立て直すかはあなた次第です。
+        この状態で進めると、投資判断のミスが起きる可能性があります。
       </p>
 
-      {/* 6. CTA */}
-      <div className="mt-6 flex flex-col items-stretch gap-2 sm:items-center">
+      {/* CTA */}
+      <div className="mt-5 flex flex-col items-stretch gap-2 sm:items-center">
+        <p className="text-center text-sm leading-snug text-da-fgMuted">
+          すぐに改善すべき論点を整理できます。
+        </p>
         <div className="flex flex-col items-center gap-1.5">
           {freeConsultHref ? (
             <a href={freeConsultHref} className={`${primaryCtaClass} w-full sm:w-auto`}>
@@ -192,7 +268,7 @@ export function DiagnosisResultView() {
           </p>
         </div>
         <Link
-          href="/lp-a#consultant-tiers"
+          href="/consultants"
           className={`${secondaryCtaClass} w-full sm:w-auto sm:self-center`}
         >
           AIコンサルタントを選ぶ
