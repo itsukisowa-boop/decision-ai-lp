@@ -1,12 +1,11 @@
 import Link from "next/link";
 import { DiagnosisClient } from "@/components/diagnosis/DiagnosisClient";
+import { DIAGNOSIS_QUESTION_COUNT } from "@/lib/diagnosis/questions";
 import type { Metadata } from "next";
-
-const TOTAL_QUESTIONS = 10;
 
 export const metadata: Metadata = {
   title: "意思決定レベル診断 | Decision AI",
-  description: `約3分で完了する意思決定レベルのモック診断です（全${TOTAL_QUESTIONS}問）。`,
+  description: `約3分で完了する意思決定レベルの診断です（全${DIAGNOSIS_QUESTION_COUNT}問）。`,
 };
 
 export default function DiagnosisPage() {
@@ -24,7 +23,7 @@ export default function DiagnosisPage() {
           意思決定レベル診断
         </h1>
         <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-da-fgMuted">
-          全{TOTAL_QUESTIONS}問・5段階選択式です。所要時間の目安は約3分です。（モック・結果は保存されません）
+          全{DIAGNOSIS_QUESTION_COUNT}問・5段階選択式です。所要時間の目安は約3分です。（結果はブラウザ内でのみ結果ページに反映されます）
         </p>
       </header>
 

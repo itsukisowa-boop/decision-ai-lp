@@ -1,46 +1,43 @@
 "use client";
 
+import {
+  DIAGNOSIS_CHOICE_LABELS,
+  DIAGNOSIS_QUESTIONS,
+  DIAGNOSIS_QUESTION_COUNT,
+} from "@/lib/diagnosis/questions";
+import {
+  DIAGNOSIS_STORAGE_KEY,
+  type DiagnosisStoredPayload,
+} from "@/lib/diagnosis/scoring";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const CHOICES = [
-  "非常に明確",
-  "ある程度明確",
-  "どちらでもない",
-  "曖昧",
-  "ほとんどない",
-] as const;
-
-const QUESTIONS = [
-  "要件定義は明確になっていますか？",
-  "ROIを定量的に説明できますか？",
-  "プロジェクトの目的は全員一致していますか？",
-  "稟議で突っ込まれそうな論点は洗い出せていますか？",
-  "ステークホルダーの認識のズレは把握できていますか？",
-  "投資対効果の前提条件は文書化されていますか？",
-  "実施しない場合のリスクは説明できますか？",
-  "ベンダー選定の比較軸は固まっていますか？",
-  "スコープとマイルストーンは関係者と合意されていますか？",
-  "意思決定の記録・トレーサビリティは確保できていますか？",
-];
-
-const TOTAL = QUESTIONS.length;
+const TOTAL = DIAGNOSIS_QUESTION_COUNT;
 
 export function DiagnosisClient() {
   const router = useRouter();
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
+  const [answers, setAnswers] = useState<number[]>([]);
 
-  const question = QUESTIONS[index];
+  const question = DIAGNOSIS_QUESTIONS[index];
   const progress = index + 1;
   const isLast = index >= TOTAL - 1;
 
   const goNext = () => {
     if (selected === null) return;
+    const nextAnswers = [...answers, selected];
     if (isLast) {
+      const payload: DiagnosisStoredPayload = { answers: nextAnswers };
+      try {
+        sessionStorage.setItem(DIAGNOSIS_STORAGE_KEY, JSON.stringify(payload));
+      } catch {
+        /* ignore quota / private mode */
+      }
       router.push("/diagnosis/result");
       return;
     }
+    setAnswers(nextAnswers);
     setIndex((i) => i + 1);
     setSelected(null);
   };
@@ -64,7 +61,7 @@ export function DiagnosisClient() {
       <p className="mt-2 text-xs text-da-subtle">該当するものを1つ選んでください。</p>
 
       <div className="mt-8 space-y-2" role="radiogroup" aria-label="回答の選択">
-        {CHOICES.map((label, i) => {
+        {DIAGNOSIS_CHOICE_LABELS.map((label, i) => {
           const active = selected === i;
           return (
             <button
