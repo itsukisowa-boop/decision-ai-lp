@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const CHOICES = [
@@ -27,9 +27,9 @@ const QUESTIONS = [
 const TOTAL = QUESTIONS.length;
 
 export function DiagnosisClient() {
+  const router = useRouter();
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
-  const [done, setDone] = useState(false);
 
   const question = QUESTIONS[index];
   const progress = index + 1;
@@ -38,45 +38,12 @@ export function DiagnosisClient() {
   const goNext = () => {
     if (selected === null) return;
     if (isLast) {
-      setDone(true);
+      router.push("/diagnosis/result");
       return;
     }
     setIndex((i) => i + 1);
     setSelected(null);
   };
-
-  if (done) {
-    return (
-      <div className="mx-auto w-full max-w-lg rounded-2xl border border-da-border bg-da-surface px-8 py-10 shadow-card">
-        <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-da-accent">
-          完了
-        </p>
-        <h2 className="mt-4 text-center text-xl font-semibold text-da-fg">診断ありがとうございました</h2>
-        <p className="mt-3 text-center text-sm leading-relaxed text-da-fgMuted">
-          こちらはモックの体験です。結果の保存やスコア計算は行っていません。
-        </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Link
-            href="/lp-a"
-            className="inline-flex rounded-full bg-da-accent px-6 py-2.5 text-sm font-semibold text-da-bg transition hover:bg-sky-300"
-          >
-            LPに戻る
-          </Link>
-          <button
-            type="button"
-            onClick={() => {
-              setDone(false);
-              setIndex(0);
-              setSelected(null);
-            }}
-            className="inline-flex rounded-full border border-white/[0.14] px-6 py-2.5 text-sm font-semibold text-da-fg transition hover:bg-white/[0.06]"
-          >
-            もう一度
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="mx-auto w-full max-w-lg rounded-2xl border border-da-border bg-da-surface px-6 py-8 shadow-card sm:px-8 sm:py-10">
