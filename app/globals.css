@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --da-bg: #09090b;
+  --da-accent: #38bdf8;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-da-bg text-da-fg antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  @apply bg-da-accent/25 text-da-fg;
+}
