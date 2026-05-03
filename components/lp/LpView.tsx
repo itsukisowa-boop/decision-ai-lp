@@ -31,6 +31,7 @@ export function LpView({ pattern }: Props) {
         stickyCta={{
           label: pattern.hero.stickyNavCtaLabel ?? pattern.hero.primaryCta.label,
           mailSubject: pattern.hero.primaryCta.mailSubject,
+          navigateHref: pattern.hero.primaryCta.navigateHref,
           hrefFallback: `${pattern.basePath}#cta`,
         }}
       />

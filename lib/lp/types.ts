@@ -1,12 +1,20 @@
 export type LpNavItem = { id: string; label: string };
 
+/** メールより優先して内部リンクへ（例: /diagnosis） */
+export type LpPrimaryCta = {
+  label: string;
+  hrefFallback: string;
+  mailSubject?: string;
+  navigateHref?: string;
+};
+
 export type LpHero = {
   kicker: string;
   titleLines: string[];
   subtitle: string;
   /** ヘッダー右の短いラベル（未指定時は primaryCta.label） */
   stickyNavCtaLabel?: string;
-  primaryCta: { label: string; mailSubject: string; hrefFallback: string };
+  primaryCta: LpPrimaryCta;
   secondaryCta: { label: string; href: string };
 };
 
@@ -64,11 +72,18 @@ export type LpConsultLayers = {
   layers: LpConsultLayer[];
 };
 
+export type LpCtaButton = {
+  label: string;
+  hrefFallback: string;
+  mailSubject?: string;
+  navigateHref?: string;
+};
+
 export type LpCtaBlock = {
   heading: string;
   body: string;
-  primary: { label: string; mailSubject: string; hrefFallback: string };
-  secondary: { label: string; mailSubject: string; hrefFallback: string };
+  primary: LpCtaButton;
+  secondary: LpCtaButton;
 };
 
 export type LpDiagnosticOutcomeItem = {

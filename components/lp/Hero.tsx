@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { LpHero } from "@/lib/lp/types";
 import type { ResolveMailHref } from "./resolveHref";
 
@@ -7,10 +8,11 @@ type Props = {
 };
 
 export function Hero({ hero, resolveMailHref }: Props) {
-  const primaryHref = resolveMailHref(
-    hero.primaryCta.mailSubject,
-    hero.primaryCta.hrefFallback
-  );
+  const primaryNavigate = hero.primaryCta.navigateHref;
+  const primaryMailHref =
+    hero.primaryCta.mailSubject != null && hero.primaryCta.mailSubject !== ""
+      ? resolveMailHref(hero.primaryCta.mailSubject, hero.primaryCta.hrefFallback)
+      : null;
 
   return (
     <section className="relative overflow-hidden bg-hero-dark">
@@ -36,12 +38,28 @@ export function Hero({ hero, resolveMailHref }: Props) {
           {hero.subtitle}
         </p>
         <div className="mt-10 flex flex-wrap gap-3">
-          <a
-            href={primaryHref}
-            className="inline-flex items-center justify-center rounded-full bg-da-accent px-7 py-3.5 text-sm font-semibold text-da-bg shadow-[0_0_28px_-6px_rgba(56,189,248,0.65)] transition hover:bg-sky-300"
-          >
-            {hero.primaryCta.label}
-          </a>
+          {primaryNavigate ? (
+            <Link
+              href={primaryNavigate}
+              className="inline-flex items-center justify-center rounded-full bg-da-accent px-7 py-3.5 text-sm font-semibold text-da-bg shadow-[0_0_28px_-6px_rgba(56,189,248,0.65)] transition hover:bg-sky-300"
+            >
+              {hero.primaryCta.label}
+            </Link>
+          ) : primaryMailHref ? (
+            <a
+              href={primaryMailHref}
+              className="inline-flex items-center justify-center rounded-full bg-da-accent px-7 py-3.5 text-sm font-semibold text-da-bg shadow-[0_0_28px_-6px_rgba(56,189,248,0.65)] transition hover:bg-sky-300"
+            >
+              {hero.primaryCta.label}
+            </a>
+          ) : (
+            <a
+              href={hero.primaryCta.hrefFallback}
+              className="inline-flex items-center justify-center rounded-full bg-da-accent px-7 py-3.5 text-sm font-semibold text-da-bg shadow-[0_0_28px_-6px_rgba(56,189,248,0.65)] transition hover:bg-sky-300"
+            >
+              {hero.primaryCta.label}
+            </a>
+          )}
           <a
             href={hero.secondaryCta.href}
             className="inline-flex items-center justify-center rounded-full border border-white/[0.14] bg-white/[0.04] px-7 py-3.5 text-sm font-semibold text-da-fg transition hover:border-da-accent/40 hover:bg-white/[0.07]"

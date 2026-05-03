@@ -25,7 +25,7 @@ export const patternA: LpPattern = {
       "3分で現状を一枚に。論点・ギャップ・稟議で問われる説明責任まで短時間で棚卸しし、次のアクションが見える状態へ進めます。",
     primaryCta: {
       label: "3分診断を開始する",
-      mailSubject: "Decision AI ｜ 3分診断",
+      navigateHref: "/diagnosis",
       hrefFallback: "#cta",
     },
     secondaryCta: {
@@ -166,7 +166,7 @@ export const patternA: LpPattern = {
     body: "診断結果の読み解きから、AIコンサル・リアル伴走の組み合わせまで、その場で次の一手をご提案します。",
     primary: {
       label: "3分診断を開始する",
-      mailSubject: "Decision AI ｜ 3分診断",
+      navigateHref: "/diagnosis",
       hrefFallback: "#materials",
     },
     secondary: {

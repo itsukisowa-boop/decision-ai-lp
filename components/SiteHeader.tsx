@@ -4,8 +4,9 @@ import { createResolveMailHref } from "@/components/lp/resolveHref";
 
 type StickyCta = {
   label: string;
-  mailSubject: string;
   hrefFallback: string;
+  mailSubject?: string;
+  navigateHref?: string;
 };
 
 type Props = {
@@ -16,7 +17,13 @@ type Props = {
 
 export function SiteHeader({ basePath, nav, stickyCta }: Props) {
   const resolveMailHref = createResolveMailHref();
-  const stickyHref = resolveMailHref(stickyCta.mailSubject, stickyCta.hrefFallback);
+  const stickyMailHref =
+    stickyCta.mailSubject != null && stickyCta.mailSubject !== ""
+      ? resolveMailHref(stickyCta.mailSubject, stickyCta.hrefFallback)
+      : null;
+
+  const stickyClass =
+    "shrink-0 rounded-full bg-da-accent px-4 py-2 text-sm font-semibold text-da-bg shadow-[0_0_24px_-4px_rgba(56,189,248,0.55)] transition hover:bg-sky-300";
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/[0.08] bg-da-bg/85 backdrop-blur-md">
@@ -38,12 +45,19 @@ export function SiteHeader({ basePath, nav, stickyCta }: Props) {
             </a>
           ))}
         </nav>
-        <a
-          href={stickyHref}
-          className="shrink-0 rounded-full bg-da-accent px-4 py-2 text-sm font-semibold text-da-bg shadow-[0_0_24px_-4px_rgba(56,189,248,0.55)] transition hover:bg-sky-300"
-        >
-          {stickyCta.label}
-        </a>
+        {stickyCta.navigateHref ? (
+          <Link href={stickyCta.navigateHref} className={stickyClass}>
+            {stickyCta.label}
+          </Link>
+        ) : stickyMailHref ? (
+          <a href={stickyMailHref} className={stickyClass}>
+            {stickyCta.label}
+          </a>
+        ) : (
+          <a href={stickyCta.hrefFallback} className={stickyClass}>
+            {stickyCta.label}
+          </a>
+        )}
       </div>
     </header>
   );

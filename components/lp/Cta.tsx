@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { LpCtaBlock } from "@/lib/lp/types";
 import type { ResolveMailHref } from "./resolveHref";
 
@@ -5,6 +6,48 @@ type Props = {
   cta: LpCtaBlock;
   resolveMailHref: ResolveMailHref;
 };
+
+function CtaButton({
+  btn,
+  resolveMailHref,
+  variant,
+}: {
+  btn: LpCtaBlock["primary"];
+  resolveMailHref: ResolveMailHref;
+  variant: "primary" | "secondary";
+}) {
+  const mailHref =
+    btn.mailSubject != null && btn.mailSubject !== ""
+      ? resolveMailHref(btn.mailSubject, btn.hrefFallback)
+      : null;
+
+  const primaryClass =
+    "inline-flex rounded-full bg-da-accent px-8 py-3 text-sm font-semibold text-da-bg shadow-[0_0_28px_-6px_rgba(56,189,248,0.65)] transition hover:bg-sky-300";
+  const secondaryClass =
+    "inline-flex rounded-full border border-white/[0.14] bg-white/[0.04] px-8 py-3 text-sm font-semibold text-da-fg transition hover:border-da-accent/35 hover:bg-white/[0.07]";
+
+  const cls = variant === "primary" ? primaryClass : secondaryClass;
+
+  if (btn.navigateHref) {
+    return (
+      <Link href={btn.navigateHref} className={cls}>
+        {btn.label}
+      </Link>
+    );
+  }
+  if (mailHref) {
+    return (
+      <a href={mailHref} className={cls}>
+        {btn.label}
+      </a>
+    );
+  }
+  return (
+    <a href={btn.hrefFallback} className={cls}>
+      {btn.label}
+    </a>
+  );
+}
 
 export function Cta({ cta, resolveMailHref }: Props) {
   return (
@@ -18,18 +61,8 @@ export function Cta({ cta, resolveMailHref }: Props) {
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-da-fgMuted">{cta.body}</p>
         <div className="mt-10 flex flex-wrap justify-center gap-3">
-          <a
-            href={resolveMailHref(cta.primary.mailSubject, cta.primary.hrefFallback)}
-            className="inline-flex rounded-full bg-da-accent px-8 py-3 text-sm font-semibold text-da-bg shadow-[0_0_28px_-6px_rgba(56,189,248,0.65)] transition hover:bg-sky-300"
-          >
-            {cta.primary.label}
-          </a>
-          <a
-            href={resolveMailHref(cta.secondary.mailSubject, cta.secondary.hrefFallback)}
-            className="inline-flex rounded-full border border-white/[0.14] bg-white/[0.04] px-8 py-3 text-sm font-semibold text-da-fg transition hover:border-da-accent/35 hover:bg-white/[0.07]"
-          >
-            {cta.secondary.label}
-          </a>
+          <CtaButton btn={cta.primary} resolveMailHref={resolveMailHref} variant="primary" />
+          <CtaButton btn={cta.secondary} resolveMailHref={resolveMailHref} variant="secondary" />
         </div>
       </div>
     </section>
