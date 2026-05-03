@@ -67,9 +67,35 @@ export type LpConsultLayers = {
 export type LpCtaBlock = {
   heading: string;
   body: string;
-  envHint?: string;
   primary: { label: string; mailSubject: string; hrefFallback: string };
   secondary: { label: string; mailSubject: string; hrefFallback: string };
+};
+
+export type LpDiagnosticOutcomeItem = {
+  title: string;
+  desc: string;
+};
+
+export type LpDiagnosticOutcomes = {
+  heading: string;
+  intro?: string;
+  items: LpDiagnosticOutcomeItem[];
+};
+
+export type LpConsultantTierCard = {
+  role: string;
+  tagline: string;
+};
+
+export type LpConsultantTierSection = {
+  heading: string;
+  intro?: string;
+  cards: LpConsultantTierCard[];
+};
+
+export type LpAiToRealTransition = {
+  heading: string;
+  lines: string[];
 };
 
 export type LpPattern = {
@@ -78,8 +104,11 @@ export type LpPattern = {
   nav: LpNavItem[];
   hero: LpHero;
   pain: LpPain;
+  diagnosticOutcomes?: LpDiagnosticOutcomes;
   journey?: LpJourney;
   consultLayers?: LpConsultLayers;
+  consultantTiers?: LpConsultantTierSection;
+  aiToReal?: LpAiToRealTransition;
   solution: LpSolution;
   features: { heading: string; items: LpFeatureItem[] };
   materials: LpMaterials;

@@ -133,8 +133,6 @@ export const patternB: LpPattern = {
   cta: {
     heading: "伴走の厚みとAIのスピード、両方を試しませんか？",
     body: "稼働レンジ・レイヤー構成・セキュリティ要件まで、30分のすり合わせから可能です。",
-    envHint:
-      "本番では `.env` に `NEXT_PUBLIC_CONTACT_EMAIL` を設定すると、ボタンからメールが開きます。",
     primary: {
       label: "伴走プランを相談する",
       mailSubject: "Decision AI ｜ 伴走プラン相談",

@@ -1,3 +1,4 @@
+import { LpPasswordGate } from "@/components/lp/LpPasswordGate";
 import { LpView } from "@/components/lp/LpView";
 import { patternB } from "@/lib/lp/pattern-b";
 import type { Metadata } from "next";
@@ -9,5 +10,9 @@ export const metadata: Metadata = {
 };
 
 export default function LpBPage() {
-  return <LpView pattern={patternB} />;
+  return (
+    <LpPasswordGate>
+      <LpView pattern={patternB} />
+    </LpPasswordGate>
+  );
 }

@@ -6,23 +6,26 @@ export const patternA: LpPattern = {
   basePath: "/lp-a",
   nav: [
     { id: "pain", label: "課題" },
+    { id: "diagnostic-outcomes", label: "診断でわかる" },
     { id: "journey", label: "流れ" },
     { id: "solution", label: "解決策" },
     { id: "features", label: "機能" },
+    { id: "consultant-tiers", label: "AIコンサル" },
+    { id: "ai-real", label: "伴走" },
     { id: "materials", label: "資料" },
     { id: "compare", label: "Before/After" },
     { id: "why", label: "強み" },
-    { id: "cta", label: "相談" },
+    { id: "cta", label: "診断" },
   ],
   hero: {
     kicker: "Decision AI",
-    stickyNavCtaLabel: "無料診断",
+    stickyNavCtaLabel: "3分診断",
     titleLines: ["その投資判断、", "本当に説明できますか？"],
     subtitle:
-      "無料診断で論点とギャップを短時間で可視化。AIコンサルの範囲を選び、相談まで一気通貫で進められます。",
+      "3分で現状を一枚に。論点・ギャップ・稟議で問われる説明責任まで短時間で棚卸しし、次のアクションが見える状態へ進めます。",
     primaryCta: {
-      label: "無料診断を申し込む",
-      mailSubject: "Decision AI ｜ 無料診断",
+      label: "3分診断を開始する",
+      mailSubject: "Decision AI ｜ 3分診断",
       hrefFallback: "#cta",
     },
     secondaryCta: {
@@ -41,12 +44,34 @@ export const patternA: LpPattern = {
       "ROIの根拠が弱い",
     ],
   },
+  diagnosticOutcomes: {
+    heading: "診断でわかること",
+    intro: "短時間の質問と構造化により、意思決定プロセスのボトルネックを言語化します。",
+    items: [
+      {
+        title: "意思決定成熟度",
+        desc: "論点設計・証跡・説明責任がどこまで整っているかをスコープごとに把握できます。",
+      },
+      {
+        title: "プロジェクト失敗リスク",
+        desc: "要件ブレ・ステークホルダー認識ズレ・実行ギャップなど、先行きのリスクを可視化します。",
+      },
+      {
+        title: "稟議に足りない論点",
+        desc: "比較軸・前提・未決事項が不足していないか、稟議で突っ込まれやすい論点を洗い出します。",
+      },
+      {
+        title: "ROI説明の不足ポイント",
+        desc: "定量・定性の説明が薄い箇所や、投資判断として成立しないギャップを特定します。",
+      },
+    ],
+  },
   journey: {
     heading: "診断から相談までの流れ",
-    intro: "まずは無料診断で現状を一枚に。次にAIコンサルの支援範囲を選び、個別相談で進め方を確定します。",
+    intro: "まずは3分診断で現状を一枚に。次にAIコンサルの支援範囲を選び、個別相談で進め方を確定します。",
     steps: [
       {
-        title: "無料診断",
+        title: "3分診断",
         desc: "論点・前提・ギャップを短時間で棚卸しし、「説明に必要な材料」を揃えるための第一歩です。",
       },
       {
@@ -57,6 +82,23 @@ export const patternA: LpPattern = {
         title: "個別相談",
         desc: "社内調整・セキュリティ・契約まで、次のアクションをすり合わせ。必要ならリアル伴走も検討できます。",
       },
+    ],
+  },
+  consultantTiers: {
+    heading: "診断後に選べるAIコンサルタント",
+    intro: "診断結果にあわせて、支援の厚みとスピードのバランスを選べます（すべてAI支援テンプレとして選択）。",
+    cards: [
+      { role: "レジェンド", tagline: "経営判断・超上流" },
+      { role: "マネージャー", tagline: "ROI設計・リスク分析" },
+      { role: "コンサルタント", tagline: "要件整理・実務伴走" },
+      { role: "アソシエイト", tagline: "質問型・思考整理" },
+    ],
+  },
+  aiToReal: {
+    heading: "AIからリアル伴走へ",
+    lines: [
+      "AIで整理し、必要なタイミングだけプロが伴走します。",
+      "1.0人月前提ではなく、30〜50%の部分稼働で支援可能です。",
     ],
   },
   solution: {
@@ -120,18 +162,16 @@ export const patternA: LpPattern = {
     ],
   },
   cta: {
-    heading: "まずは無料診断から、現状を一枚にしませんか？",
-    body: "診断ご希望・資料請求・導入スケジュールのご相談まで、お気軽にお問い合わせください。",
-    envHint:
-      "本番では `.env` に `NEXT_PUBLIC_CONTACT_EMAIL` を設定すると、ボタンからメールが開きます。",
+    heading: "まずは3分で、貴社の意思決定レベルを診断しませんか？",
+    body: "診断結果の読み解きから、AIコンサル・リアル伴走の組み合わせまで、その場で次の一手をご提案します。",
     primary: {
-      label: "無料診断を申し込む",
-      mailSubject: "Decision AI ｜ 無料診断",
+      label: "3分診断を開始する",
+      mailSubject: "Decision AI ｜ 3分診断",
       hrefFallback: "#materials",
     },
     secondary: {
-      label: "問い合わせ",
-      mailSubject: "Decision AI ｜ お問い合わせ",
+      label: "デモ相談する",
+      mailSubject: "Decision AI ｜ デモ相談",
       hrefFallback: "#materials",
     },
   },

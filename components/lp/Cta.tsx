@@ -1,4 +1,3 @@
-import { getContactEmail } from "@/lib/lp/mail";
 import type { LpCtaBlock } from "@/lib/lp/types";
 import type { ResolveMailHref } from "./resolveHref";
 
@@ -8,8 +7,6 @@ type Props = {
 };
 
 export function Cta({ cta, resolveMailHref }: Props) {
-  const hasEmail = Boolean(getContactEmail());
-
   return (
     <section
       id="cta"
@@ -20,9 +17,6 @@ export function Cta({ cta, resolveMailHref }: Props) {
           {cta.heading}
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-da-fgMuted">{cta.body}</p>
-        {!hasEmail && cta.envHint ? (
-          <p className="mx-auto mt-6 max-w-lg text-xs leading-relaxed text-da-subtle">{cta.envHint}</p>
-        ) : null}
         <div className="mt-10 flex flex-wrap justify-center gap-3">
           <a
             href={resolveMailHref(cta.primary.mailSubject, cta.primary.hrefFallback)}

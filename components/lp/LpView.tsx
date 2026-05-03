@@ -1,9 +1,12 @@
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import type { LpPattern } from "@/lib/lp/types";
+import { AiToRealBand } from "./AiToRealBand";
 import { Compare } from "./Compare";
 import { ConsultLayers } from "./ConsultLayers";
+import { ConsultantTierCards } from "./ConsultantTierCards";
 import { Cta } from "./Cta";
+import { DiagnosticOutcomes } from "./DiagnosticOutcomes";
 import { Features } from "./Features";
 import { Hero } from "./Hero";
 import { Journey } from "./Journey";
@@ -34,10 +37,17 @@ export function LpView({ pattern }: Props) {
       <main className="text-da-fg">
         <Hero hero={pattern.hero} resolveMailHref={resolveMailHref} />
         <Pain pain={pattern.pain} />
+        {pattern.diagnosticOutcomes ? (
+          <DiagnosticOutcomes block={pattern.diagnosticOutcomes} />
+        ) : null}
         {pattern.journey ? <Journey journey={pattern.journey} /> : null}
         {pattern.consultLayers ? <ConsultLayers block={pattern.consultLayers} /> : null}
         <Solution solution={pattern.solution} />
         <Features heading={pattern.features.heading} items={pattern.features.items} />
+        {pattern.consultantTiers ? (
+          <ConsultantTierCards block={pattern.consultantTiers} />
+        ) : null}
+        {pattern.aiToReal ? <AiToRealBand block={pattern.aiToReal} /> : null}
         <Materials materials={pattern.materials} resolveMailHref={resolveMailHref} />
         <Compare compare={pattern.compare} />
         <Why heading={pattern.why.heading} items={pattern.why.items} />
