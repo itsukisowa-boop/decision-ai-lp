@@ -84,6 +84,7 @@ export type LpCtaBlock = {
   body: string;
   primary: LpCtaButton;
   secondary: LpCtaButton;
+  tertiary?: LpCtaButton;
 };
 
 export type LpDiagnosticOutcomeItem = {

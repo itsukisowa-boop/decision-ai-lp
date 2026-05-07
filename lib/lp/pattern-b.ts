@@ -169,5 +169,10 @@ export const patternB: LpPattern = {
       hrefFallback: "/diagnosis",
       navigateHref: "/diagnosis",
     },
+    tertiary: {
+      label: "AIコンサルタントを選ぶ",
+      hrefFallback: "/consultants",
+      navigateHref: "/consultants",
+    },
   },
 };

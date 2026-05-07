@@ -14,7 +14,7 @@ function CtaButton({
 }: {
   btn: LpCtaBlock["primary"];
   resolveMailHref: ResolveMailHref;
-  variant: "primary" | "secondary";
+  variant: "primary" | "secondary" | "tertiary";
 }) {
   const mailHref =
     btn.mailSubject != null && btn.mailSubject !== ""
@@ -63,6 +63,9 @@ export function Cta({ cta, resolveMailHref }: Props) {
         <div className="mt-10 flex flex-wrap justify-center gap-3">
           <CtaButton btn={cta.primary} resolveMailHref={resolveMailHref} variant="primary" />
           <CtaButton btn={cta.secondary} resolveMailHref={resolveMailHref} variant="secondary" />
+          {cta.tertiary ? (
+            <CtaButton btn={cta.tertiary} resolveMailHref={resolveMailHref} variant="tertiary" />
+          ) : null}
         </div>
       </div>
     </section>
