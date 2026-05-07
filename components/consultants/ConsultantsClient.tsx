@@ -42,9 +42,11 @@ export function ConsultantsClient() {
 
   function handleChoose(id: ConsultantId) {
     setSelectedId(id);
-    // 選択ハイライトを一瞬見せてから相談ページへ
+    const selected = CONSULTANT_TIERS.find((tier) => tier.id === id);
+    if (!selected) return;
+    // 選択ハイライトを一瞬見せてから個別ページへ
     window.setTimeout(() => {
-      router.push(`/contact?tier=${encodeURIComponent(id)}`);
+      router.push(selected.href);
     }, 220);
   }
 
