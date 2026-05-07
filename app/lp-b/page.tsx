@@ -4,9 +4,9 @@ import { patternB } from "@/lib/lp/pattern-b";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Decision AI | AI整理 × プロ伴走の意思決定支援",
+  title: "Decision AI | AI×リアルコンサル伴走型LP",
   description:
-    "AIで整理し、プロが意思決定を伴走する。リアルコンサルが必要に応じて稼働の30〜50%で参画、4レイヤー体制をご用意。",
+    "AIで要件定義・ROI・稟議論点を構造化し、必要なタイミングだけリアルコンサルが伴走する高単価支援モデル。",
 };
 
 export default function LpBPage() {
